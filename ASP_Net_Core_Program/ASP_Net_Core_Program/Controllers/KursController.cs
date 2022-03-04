@@ -20,7 +20,8 @@ namespace ASP_Net_Core_Program.Controllers
         [Route("getMessage")]
         public IActionResult getMessage()
         {
-            return Ok();
+           return Ok("Hej, jestem backendowcem");
+           
         }
 
     }

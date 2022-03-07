@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,18 +13,34 @@ namespace ASP_Net_Core_Program.Controllers
     [Route("kurs")]
     public class KursController : ControllerBase
     {
-
-        public KursController()
+        private readonly IConfiguration _configuration;
+        public KursController(IConfiguration configuration)
         {
+            _configuration = configuration;
         }
 
         [HttpGet]
         [Route("getMessage")]
-        public IActionResult getMessage()
+        public IActionResult GetMessage()
         {
-           return Ok("Hej, jestem backendowcem");
-           
+            int refreshTime = _configuration.GetValue<int>("Application:RefreshTime");
+
+            var message = new Message
+            {
+                Content = $"My refresh time is: { refreshTime} ",
+                Author = "Olga"
+            };
+
+            return Ok(message);
+        }
+
+        [HttpPost]
+        [Route("sendMessage")]
+        public IActionResult SendMessage([FromBody]Message message)
+        {
+            return Ok(message);
         }
 
     }
+
 }
